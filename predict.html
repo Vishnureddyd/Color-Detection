@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Real-Time Color Detection</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-image: url("{{ url_for('static', filename='2.jpg') }}");
+      background-size: cover;
+      background-position: center;
+      color: white;
+      text-align: center;
+    }
+    video {
+      border: 3px solid white;
+      border-radius: 10px;
+      margin-top: 20px;
+      width: 480px;
+      height: 360px;
+      object-fit: cover;
+    }
+    #colorNameDisplay {
+      font-size: 20px;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h2>Real-Time Color Detection With Voice</h2>
+
+  <label for="language">Select Language:</label>
+  <select id="language">
+    <option value="en">English</option>
+    <option value="kn">Kannada</option>
+    <option value="te">Telugu</option>
+    <option value="hi">Hindi</option>
+  </select>
+
+  <br>
+  <video id="camera" autoplay></video>
+  <div id="colorNameDisplay">Click on video to detect color</div>
+
+  <script>
+    const video = document.getElementById('camera');
+    const langSelect = document.getElementById('language');
+    const colorDisplay = document.getElementById('colorNameDisplay');
+    let currentAudio = null;
+
+    // 🎥 Start camera
+    navigator.mediaDevices.getUserMedia({ video: true })
+      .then(stream => {
+        video.srcObject = stream;
+        video.play();
+      })
+      .catch(err => console.error("Camera error:", err));
+
+    // 🎯 Detect color on click
+    video.addEventListener('click', (event) => {
+      if (!video.videoWidth || !video.videoHeight) return;
+
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+
+      // 🧠 Draw the current video frame
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+      const rect = video.getBoundingClientRect();
+      const scaleX = video.videoWidth / rect.width;
+      const scaleY = video.videoHeight / rect.height;
+
+      const x = (event.clientX - rect.left) * scaleX;
+      const y = (event.clientY - rect.top) * scaleY;
+
+      const pixel = ctx.getImageData(x, y, 1, 1).data;
+      const [r, g, b] = [pixel[0], pixel[1], pixel[2]];
+      const lang = langSelect.value;
+
+      // 🚀 Send RGB to Flask backend
+      fetch('/get_color_name', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ r, g, b, lang })
+      })
+        .then(res => res.json())
+        .then(data => {
+          colorDisplay.innerText = `${data.display_text} | RGB: (${r}, ${g}, ${b}) | HEX: ${data.hex}`;
+
+          // 🎧 Stop old audio
+          if (currentAudio) {
+            currentAudio.pause();
+            currentAudio.currentTime = 0;
+          }
+
+          // 🔊 Play new one
+          if (data.audio) {
+            currentAudio = new Audio(data.audio);
+            currentAudio.play();
+          }
+        })
+        .catch(err => console.error("Fetch error:", err));
+    });
+  </script>
+</body>
+</html>

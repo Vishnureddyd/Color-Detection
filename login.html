@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Autism Detection | Login</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Inter", sans-serif;
+      background: linear-gradient(to right, #7da8ec, #9defd5);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      /* add subtle background pattern */
+      background-image: url('/static/3.jpg');
+        
+      background-position: 0 0, 25px 25px;
+      background-size: 690px 690px;
+    }
+
+    /* Navigation Bar */
+    nav {
+      width: 100%;
+      background-color: rgba(102, 214, 255, 0.815); /* transparent */
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      display: flex;
+      justify-content: center;
+      padding: 15px 0;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 15;
+      height: 60px;
+      text-align: left;
+      border-radius: 0 0 20px 20px;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 30px;
+    }
+
+    nav ul li a {
+      text-decoration: none;
+      color: #000000;
+      font-weight: 600;
+      padding: 8px 14px;
+      border-radius: 10px;
+      transition: all 0.3s ease;
+    }
+
+    nav ul li a:hover {
+      background-color: #4a90e2;
+      color: rgb(0, 0, 0);
+      box-shadow: 0 4px 15px rgba(74, 144, 226, 0.5);
+    }
+
+    .login-container {
+      background: rgba(248, 255, 149, 0.815);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 8px 30px rgba(0 0 0 / 0.15);
+      width: 100%;
+      max-width: 420px;
+      margin-top: 45px;
+      border: 1px solid rgba(255 255 255 / 0.4);
+      color: #222;
+    }
+
+    .login-container h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 28px;
+      font-weight: 700;
+      color: #222;
+      text-shadow: 0 1px 4px rgba(143, 143, 143, 0.7);
+    }
+
+    .input-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+      color: #222;
+      text-shadow: 0 1px 1px rgba(152, 152, 152, 0.6);
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      border: 1.5px solid rgba(235, 235, 235, 0.5);
+      border-radius: 12px;
+      font-size: 16px;
+      transition: border-color 0.3s, box-shadow 0.3s;
+      background-color: rgba(255 255 255 / 0.8);
+      color: #222;
+      box-shadow: inset 0 2px 6px rgba(0 0 0 / 0.1);
+    }
+
+    input::placeholder {
+      color: #666;
+      opacity: 0.7;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #4a90e2;
+      box-shadow: 0 0 12px rgba(74, 144, 226, 0.6);
+      background-color: #fff;
+    }
+
+    .login-btn {
+      width: 100%;
+      padding: 14px;
+      background-color: #4a90e2;
+      color: white;
+      font-size: 16px;
+      font-weight: 700;
+      border: none;
+      border-radius: 14px;
+      cursor: pointer;
+      transition: background-color 0.3s, box-shadow 0.3s;
+      box-shadow: 0 5px 15px rgba(74, 144, 226, 0.5);
+      user-select: none;
+    }
+
+    .login-btn:hover {
+      background-color: #357abd;
+      box-shadow: 0 8px 22px rgba(53, 122, 189, 0.75);
+    }
+
+    .register-link {
+      margin-top: 20px;
+      text-align: center;
+      font-size: 15px;
+      color: #222;
+      text-shadow: 0 1px 1px rgba(131, 131, 131, 0.7);
+    }
+
+    .register-link a {
+      color: #002c5e;
+      text-decoration: none;
+      font-weight: 700;
+      transition: all 0.3s;
+    }
+
+    .register-link a:hover {
+      text-decoration: underline;
+      color: #031b32;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 480px) {
+      .login-container {
+        margin: 40px 20px;
+        padding: 30px 20px;
+      }
+      nav ul {
+        gap: 15px;
+      }
+      nav ul li a {
+        padding: 6px 10px;
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation Bar -->
+  <nav>
+    <ul>
+      <li><a href="/">Home</a></li>
+      <li><a href="/register">Register</a></li>
+      <li><a href="/contact">Contact</a></li>
+      <li><a href="/about">About</a></li>
+    </ul>
+  </nav>
+
+  <!-- Login Form -->
+  <div class="login-container">
+    <h2>Login Here</h2>
+    <form method="POST">
+      <div class="input-group">
+        <label for="email">Email</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          placeholder="you@example.com"
+          required
+        />
+      </div>
+
+      <div class="input-group">
+        <label for="password">Password</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          placeholder="Enter your password"
+          required
+        />
+      </div>
+
+      <button type="submit" class="login-btn">Login</button>
+    </form>
+
+    <div class="register-link">
+      Don't have an account?
+      <a href="{{ url_for('register') }}">Register here</a>
+    </div>
+  </div>
+</body>
+</html>
